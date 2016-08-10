@@ -1,0 +1,46 @@
+# prerequisites
+*.d
+
+# object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# precompiled Headers
+*.gch
+*.pch
+
+# libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+build/
+
+# debug files
+*.dSYM/
+*.su
+
+# youcompleteme
+.ycm_extra_conf.py*
+
+# backup
+*~
+
+# doxygen
+doc/doxygen
