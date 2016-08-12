@@ -5,9 +5,11 @@
 #ifndef __TK_H__
 #define __TK_H__
 #include <stdio.h>
+#include <inttypes.h>
 
 //codes
 #define TK_NUL			0x00
+#define TK_ALL_KEY		TK_NUL
 #define TK_CTRL_A		0x01
 #define TK_CTRL_B		0x02
 #define TK_CTRL_C		0x03
@@ -19,6 +21,7 @@
 #define TK_CTRL_H		0x08
 #define TK_TAB			0x09
 #define TK_ENTER		0x0a
+#define TK_EOF			TK_ENTER
 #define TK_CTRL_K		0x0b
 #define TK_CTRL_M		0x0d
 #define TK_CTRL_L		0x0c
@@ -137,112 +140,111 @@
 #define TK_BACKSPACE		0x7f
 
 // extend keys (greater codes than ascii [255])
-#define TK_F1			0x100
-#define TK_F2			0x101
-#define TK_F3			0x102
-#define TK_F4			0x103
-#define TK_F5			0x104
-#define TK_F6			0x105
-#define TK_F7			0x106
-#define TK_F8			0x107
-#define TK_F9			0x108
-#define TK_F10			0x109
-#define TK_F11			0x10a
-#define TK_F12			0x10b
-#define TK_UP			0x10c
-#define TK_DOWN			0x10d
-#define TK_RIGHT		0x10e
-#define TK_LEFT			0x10f
-#define TK_INSERT		0x110
-#define TK_DELETE		0x111
-#define TK_HOME			0x112
-#define TK_END			0x113
-#define TK_PAGE_UP		0x114
-#define TK_PAGE_DOWN		0x115
-#define TK_CTRL_UP		0x116
-#define TK_CTRL_DOWN		0x117
-#define TK_CTRL_RIGHT		0x118
-#define TK_CTRL_LEFT		0x119
+#define TK_F1			0x504f1b
+#define TK_F2			0x514f1b
+#define TK_F3			0x524f1b
+#define TK_F4			0x534f1b
+#define TK_F5			0x7e35315b1b
+#define TK_F6			0x7e37315b1b
+#define TK_F7			0x7e38315b1b
+#define TK_F8			0x7e39315b1b
+#define TK_F9			0x7e30325b1b
+#define TK_F10			0x7e31325b1b
+#define TK_F11			0x7e33325b1b
+#define TK_F12			0x7e34325b1b
+#define TK_UP			0x415b1b
+#define TK_DOWN			0x425b1b
+#define TK_RIGHT		0x435b1b
+#define TK_LEFT			0x445b1b
+#define TK_HOME			0x7e315b1b
+#define TK_INSERT		0x7e325b1b
+#define TK_DELETE		0x7e335b1b
+#define TK_END			0x7e345b1b
+#define TK_PAGE_DOWN		0x7e365b1b	
+#define TK_PAGE_UP		0x7e355b1b
+#define TK_CTRL_UP		0x414f1b
+#define TK_CTRL_DOWN		0x424f1b
+#define TK_CTRL_RIGHT		0x434f1b
+#define TK_CTRL_LEFT		0x444f1b
 
 // alt's (esc + code)
-#define TK_ALT_0		0x11a
-#define TK_ALT_1		0x11b
-#define TK_ALT_2		0x11c
-#define TK_ALT_3		0x11d
-#define TK_ALT_4		0x11e
-#define TK_ALT_5		0x11f
-#define TK_ALT_6		0x120
-#define TK_ALT_7		0x121
-#define TK_ALT_8		0x122
-#define TK_ALT_9		0x123
-#define TK_ALT_A		0x124
-#define TK_ALT_B		0x125
-#define TK_ALT_C		0x126
-#define TK_ALT_D		0x127
-#define TK_ALT_E		0x128
-#define TK_ALT_F		0x129
-#define TK_ALT_G		0x12a
-#define TK_ALT_H		0x12b
-#define TK_ALT_I		0x12c
-#define TK_ALT_J		0x12d
-#define TK_ALT_K		0x12e
-#define TK_ALT_L		0x12f
-#define TK_ALT_M		0x130
-#define TK_ALT_N		0x131
-#define TK_ALT_O		0x132
-#define TK_ALT_P		0x133
-#define TK_ALT_Q		0x134
-#define TK_ALT_R		0x135
-#define TK_ALT_S		0x136
-#define TK_ALT_T		0x137
-#define TK_ALT_U		0x138
-#define TK_ALT_V		0x139
-#define TK_ALT_W		0x13a
-#define TK_ALT_X		0x13b
-#define TK_ALT_Y		0x13c
-#define TK_ALT_Z		0x13d
-#define TK_ALT_a		0x13e
-#define TK_ALT_b		0x13f
-#define TK_ALT_c		0x140
-#define TK_ALT_d		0x141
-#define TK_ALT_e		0x142
-#define TK_ALT_f		0x143
-#define TK_ALT_g		0x144
-#define TK_ALT_h		0x145
-#define TK_ALT_i		0x146
-#define TK_ALT_j		0x147
-#define TK_ALT_k		0x148
-#define TK_ALT_l		0x149
-#define TK_ALT_m		0x14a
-#define TK_ALT_n		0x14b
-#define TK_ALT_o		0x14c
-#define TK_ALT_p		0x14d
-#define TK_ALT_q		0x14e
-#define TK_ALT_r		0x14f
-#define TK_ALT_s		0x150
-#define TK_ALT_t		0x151
-#define TK_ALT_u		0x152
-#define TK_ALT_v		0x153
-#define TK_ALT_w		0x154
-#define TK_ALT_x		0x155
-#define TK_ALT_y		0x156
-#define TK_ALT_z		0x157
+#define TK_ALT_(CODE)		((CODE<<8)|TK_ESC)
+#define TK_ALT_0		0x301b
+#define TK_ALT_1		0x311b
+#define TK_ALT_2		0x321b
+#define TK_ALT_3		0x331b
+#define TK_ALT_4		0x341b
+#define TK_ALT_5		0x351b
+#define TK_ALT_6		0x361b
+#define TK_ALT_7		0x371b
+#define TK_ALT_8		0x381b
+#define TK_ALT_9		0x391b
+#define TK_ALT_A		0x411b
+#define TK_ALT_B		0x421b
+#define TK_ALT_C		0x431b
+#define TK_ALT_D		0x441b
+#define TK_ALT_E		0x451b
+#define TK_ALT_F		0x461b
+#define TK_ALT_G		0x471b
+#define TK_ALT_H		0x481b
+#define TK_ALT_I		0x491b
+#define TK_ALT_J		0x4a1b
+#define TK_ALT_K		0x4b1b
+#define TK_ALT_L		0x4c1b
+#define TK_ALT_M		0x4d1b
+#define TK_ALT_N		0x4e1b
+#define TK_ALT_O		0x4f1b
+#define TK_ALT_P		0x501b
+#define TK_ALT_Q		0x511b
+#define TK_ALT_R		0x521b
+#define TK_ALT_S		0x531b
+#define TK_ALT_T		0x541b
+#define TK_ALT_U		0x551b
+#define TK_ALT_V		0x561b
+#define TK_ALT_W		0x571b
+#define TK_ALT_X		0x581b
+#define TK_ALT_Y		0x591b
+#define TK_ALT_Z		0x5a1b
+#define TK_ALT_a		0x611b
+#define TK_ALT_b		0x621b
+#define TK_ALT_c		0x631b
+#define TK_ALT_d		0x641b
+#define TK_ALT_e		0x651b
+#define TK_ALT_f		0x661b
+#define TK_ALT_g		0x671b
+#define TK_ALT_h		0x681b
+#define TK_ALT_i		0x691b
+#define TK_ALT_j		0x6a1b
+#define TK_ALT_k		0x6b1b
+#define TK_ALT_l		0x6c1b
+#define TK_ALT_m		0x6d1b
+#define TK_ALT_n		0x6e1b
+#define TK_ALT_o		0x6f1b
+#define TK_ALT_p		0x701b
+#define TK_ALT_q		0x711b
+#define TK_ALT_r		0x721b
+#define TK_ALT_s		0x731b
+#define TK_ALT_t		0x741b
+#define TK_ALT_u		0x751b
+#define TK_ALT_v		0x761b
+#define TK_ALT_w		0x771b
+#define TK_ALT_x		0x781b
+#define TK_ALT_y		0x791b
+#define TK_ALT_z		0x7a1b
 
-// n's
-#define TK_N_KEY_BIND		0x158
 #define TK_PRINTABLE_BEGIN	TK_SPACE
 #define TK_PRINTABLE_END	TK_TILDE
 
 
-typedef int		key_t;
-typedef void (*bind_function)(key_t, void*);
+typedef uint64_t tkey_t;
+typedef void (*bind_function)(tkey_t, void*);
 
 void tk_init(void);
 void tk_finish(void);
-void tk_bind_key		(key_t k, bind_function f, void* argument_data);
+void tk_bind_key		(tkey_t k, bind_function f, void* argument_data);
 void tk_bind_all_key		(bind_function f, void* argument_data);
 void tk_bind_all_printable_key	(bind_function f, void* argument_data);
-int  tk_is_printable(key_t k);
+int  tk_is_printable(tkey_t k);
 void tk_wait(void);
 
 #endif // __TK_H__

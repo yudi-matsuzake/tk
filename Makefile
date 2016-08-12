@@ -42,7 +42,7 @@ DOX=$(DOX_LATEX) $(DOC_PATH)/html $(DOC_PATH)/man
 
 #-OBJ-------------------------------------------------
 
-all: $(TK_OBJ)
+all: $(TK_OBJ) $(LIB_STATIC) $(LIB_SHARED)
 
 $(BUILD_PATH):
 	[ -d $(BUILD_PATH) ] || mkdir -p $(BUILD_PATH)

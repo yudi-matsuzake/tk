@@ -23,7 +23,7 @@ void draw()
 	fflush(stdout);
 }
 
-void move_O(key_t k, void* ptr){
+void move_O(tkey_t k, void* ptr){
 	switch(k){
 	case TK_UP:
 		x--;

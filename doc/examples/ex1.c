@@ -2,9 +2,50 @@
 #include <unistd.h>
 #include <tk.h>
 
-void test_f(key_t k, void* ptr)
+void test_f(tkey_t k, void* ptr)
 {
 	switch(k){
+	
+	case TK_ALT_(TK_z):
+	case TK_ALT_(TK_Z):
+		printf("Alt+z\n");
+		break;
+	case TK_ALT_(TK_PIPE):
+		printf("Alt+|\n");
+		break;
+	case TK_F2:
+		printf("TK_F2\n");
+		break;
+	case TK_F3:
+		printf("TK_F3\n");
+		break;
+	case TK_F4:
+		printf("TK_F4\n");
+		break;
+	case TK_F5:
+		printf("TK_F5\n");
+		break;
+	case TK_F6:
+		printf("TK_F6\n");
+		break;
+	case TK_F7:
+		printf("TK_F7\n");
+		break;
+	case TK_F8:
+		printf("TK_F8\n");
+		break;
+	case TK_F9:
+		printf("TK_F9\n");
+		break;
+	case TK_F10:
+		printf("TK_F10\n");
+		break;
+	case TK_F11:
+		printf("TK_F11\n");
+		break;
+	case TK_F12:
+		printf("TK_F12\n");
+		break;
 	case TK_CTRL_C:
 		printf("CTRL+C\n");
 		break;
@@ -55,14 +96,14 @@ void test_f(key_t k, void* ptr)
 		break;
 	default:
 		if(tk_is_printable(k))
-			printf("get: %c\n", k);
+			printf("get: %c\n", (unsigned char)k);
 		else
-			printf("get: i dont know {%d}\n", k);
+			printf("get: i dont know {%lu}\n", k);
 		break;
 	}
 }
 
-void plus_and_minus(key_t k, void* ptr)
+void plus_and_minus(tkey_t k, void* ptr)
 {
 	switch(k){
 	case TK_PLUS:
@@ -74,7 +115,7 @@ void plus_and_minus(key_t k, void* ptr)
 	}
 }
 
-void quit(key_t k, void* ptr){
+void quit(tkey_t k, void* ptr){
 	tk_finish();
 }
 
