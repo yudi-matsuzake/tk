@@ -44,3 +44,5 @@ build/
 
 # doxygen
 doc/doxygen
+doc/genEX.sh
+

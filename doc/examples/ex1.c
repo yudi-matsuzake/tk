@@ -6,6 +6,9 @@ void test_f(tkey_t k, void* ptr)
 {
 	switch(k){
 	
+	case TK_ALT_(TK_CTRL_V):
+		printf("Ctrl+ALT+V\n");
+		break;
 	case TK_ALT_(TK_z):
 	case TK_ALT_(TK_Z):
 		printf("Alt+z\n");

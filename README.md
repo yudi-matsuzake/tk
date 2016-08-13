@@ -1,7 +1,7 @@
 tk
 --
 
-libtk is a **t**erminal **k**eyboard bindings helper. This project is for my own fun, there are many mature alternatives like [ncurses](https://www.gnu.org/software/ncurses/). libtk does not have all the features that ncurses has, tk is minimalistic, small and simple. tk is just a helper to bind functions to keyboard, like in this code, where the keys Ctrl+L are binded with the function clear screen (common convention em cli/tui programs):
+libtk is a helper for **t**erminal **k**eyboard bindings. This project is for my own fun, there are many mature alternatives like [ncurses](https://www.gnu.org/software/ncurses/). libtk does not have all the features that ncurses has, tk is minimalistic, small and simple. tk is just a helper to bind functions to keyboard, like in this code, where the keys Ctrl+L are binded with the function clear screen (common convention em cli/tui programs):
 
 ```c
 #include <stdio.h>
