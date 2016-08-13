@@ -1,0 +1,202 @@
+.TH "src/tk.c" 3 "Sat Aug 13 2016" "tk" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+libtk
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <unistd\&.h>\fP
+.br
+\fC#include <termios\&.h>\fP
+.br
+\fC#include <pthread\&.h>\fP
+.br
+\fC#include <signal\&.h>\fP
+.br
+\fC#include <sys/select\&.h>\fP
+.br
+\fC#include <generics/queue\&.h>\fP
+.br
+\fC#include <generics/trie\&.h>\fP
+.br
+\fC#include <generics/vector\&.h>\fP
+.br
+\fC#include 'tk\&.h'\fP
+.br
+
+.SS "Classes"
+
+.in +1c
+.ti -1c
+.RI "struct \fBtk_bind\fP"
+.br
+.in -1c
+.SS "Typedefs"
+
+.in +1c
+.ti -1c
+.RI "typedef struct \fBtk_bind\fP \fBtk_bind\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "void \fBinitialize_tk_structures\fP (void)"
+.br
+.ti -1c
+.RI "void * \fBgetchar_monitor_and_dispatch\fP (void *d)"
+.br
+.ti -1c
+.RI "int \fBprocess_escape\fP (void)"
+.br
+.ti -1c
+.RI "void \fBadd_escape_sequence\fP (char *seq, \fBtkey_t\fP k)"
+.br
+.ti -1c
+.RI "void \fBsigint_handler\fP (int sig)"
+.br
+.ti -1c
+.RI "void \fBexec_queue\fP (queue_t *bind_queue, \fBtkey_t\fP k)"
+.br
+.ti -1c
+.RI "void \fBcall_bind\fP (\fBtkey_t\fP k)"
+.br
+.ti -1c
+.RI "int \fBtk_is_printable\fP (\fBtkey_t\fP k)"
+.br
+.ti -1c
+.RI "void \fBtk_init\fP (void)"
+.br
+.ti -1c
+.RI "void \fBdestroy_bind_queues\fP (tnode_t *node)"
+.br
+.ti -1c
+.RI "void \fBtk_finish\fP (void)"
+.br
+.ti -1c
+.RI "void \fBtk_bind_key\fP (\fBtkey_t\fP k, \fBbind_function\fP f, void *argument_data)"
+.br
+.ti -1c
+.RI "void \fBtk_bind_all_key\fP (\fBbind_function\fP f, void *argument_data)"
+.br
+.ti -1c
+.RI "void \fBtk_bind_all_printable_key\fP (\fBbind_function\fP f, void *argument_data)"
+.br
+.ti -1c
+.RI "void \fBtk_wait\fP (void)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "struct termios \fBold_term_attr\fP"
+.br
+.ti -1c
+.RI "struct termios \fBnew_term_attr\fP"
+.br
+.ti -1c
+.RI "struct termios \fBescape_term_attr\fP"
+.br
+.ti -1c
+.RI "pthread_t \fBgetchar_monitor_thread\fP"
+.br
+.ti -1c
+.RI "trie_t \fBbind\fP"
+.br
+.ti -1c
+.RI "int \fBtk_pipe\fP [2]"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Implementations of the libtk 
+.SH "Typedef Documentation"
+.PP 
+.SS "typedef struct \fBtk_bind\fP \fBtk_bind\fP"
+
+.SH "Function Documentation"
+.PP 
+.SS "void add_escape_sequence (char * seq, \fBtkey_t\fP k)"
+
+.SS "void call_bind (\fBtkey_t\fP k)"
+
+.SS "void destroy_bind_queues (tnode_t * node)"
+
+.SS "void exec_queue (queue_t * bind_queue, \fBtkey_t\fP k)"
+
+.SS "void * getchar_monitor_and_dispatch (void * d)"
+Monitor the keys and dispatch to the bind functions\&.
+.PP
+\fBParameters:\fP
+.RS 4
+\fId\fP data 
+.RE
+.PP
+
+.SS "void initialize_tk_structures (void)"
+
+.SS "int process_escape (void)"
+
+.SS "void sigint_handler (int sig)"
+
+.SS "void tk_bind_all_key (\fBbind_function\fP f, void * argument_data)"
+Bind all keys to the function \fCf\fP\&.
+.PP
+\fBParameters:\fP
+.RS 4
+\fIf\fP the function callback 
+.br
+\fIargument_data\fP argument to pass to the function 
+.RE
+.PP
+
+.SS "void tk_bind_all_printable_key (\fBbind_function\fP f, void * argument_data)"
+Bind all printable keys (charactere)\&. Does not bind the special keys, neither the escape keys\&.
+.PP
+\fBParameters:\fP
+.RS 4
+\fIf\fP the function callback 
+.br
+\fIargument_data\fP argument to pass to the function 
+.RE
+.PP
+
+.SS "void tk_bind_key (\fBtkey_t\fP k, \fBbind_function\fP f, void * argument_data)"
+Bind a key to a functions\&. Bind the key \fCk\fP to a function \fCf\fP and will pass to \fCf\fP\&.
+.PP
+\fBParameters:\fP
+.RS 4
+\fIk\fP the key to bind 
+.br
+\fIf\fP the function callback 
+.br
+\fIargument_data\fP argument to pass to the function 
+.RE
+.PP
+
+.SS "void tk_finish (void)"
+Finish all internal structures of the libtk\&. 
+.SS "void tk_init (void)"
+Initialize all the internal structures of the libtk\&. This includes all the necessary changes in the terminal instance with termios\&.h\&. The thread that will monitor the key presses will be launched here, in \fCtk_init\fP\&. 
+.SS "int tk_is_printable (\fBtkey_t\fP k)"
+Returns whether the key \fCk\fP is printable\&.
+.PP
+\fBParameters:\fP
+.RS 4
+\fIk\fP key tk code
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+1 if the string is printable, 0 otherwise\&. 
+.RE
+.PP
+
+.SS "void tk_wait (void)"
+Wait until the tk thread exits\&. 
+
+.SH "Author"
+.PP 

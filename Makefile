@@ -39,6 +39,7 @@ INSTALL_SHARED_PATH=/usr/lib/libtk.so
 DOC_PATH=doc
 DOX_LATEX=$(DOC_PATH)/doxygen/latex
 DOX=$(DOX_LATEX) $(DOC_PATH)/html $(DOC_PATH)/man
+MAN_PATH=$(DOC_PATH)/tk.3
 
 #-OBJ-------------------------------------------------
 
@@ -71,6 +72,7 @@ $(LIB_SHARED): $(LIB_SHARED_PATH) $(TK_OBJ)
 
 #-INSTALLATION----------------------------------------
 install: $(HEADERS) $(LIB_STATIC) $(LIB_SHARED)
+	-cp $(MAN_PATH) /usr/share/man/man3
 	cp $(HEADERS) $(INSTALL_HEADER_PATH)
 	cp $(LIB_STATIC) $(INSTALL_STATIC_PATH)
 	cp $(LIB_SHARED) $(INSTALL_SHARED_PATH)
