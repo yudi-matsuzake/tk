@@ -25,6 +25,7 @@
 #define __TK_H__
 #include <stdio.h>
 #include <inttypes.h>
+#include <sys/ioctl.h>
 
 //codes
 #define TK_NUL			0x00
@@ -254,16 +255,35 @@
 #define TK_PRINTABLE_BEGIN	TK_SPACE
 #define TK_PRINTABLE_END	TK_TILDE
 
+typedef enum{
+	TK_CURSOR_UP,
+	TK_CURSOR_DOWN,
+	TK_CURSOR_RIGHT,
+	TK_CURSOR_LEFT,
+	TK_CLEAR_SCREEN,
+	TK_CLEAR_LINE_END,
+	TK_CLEAR_LINE_BEGINNING,
+	TK_CLEAR_WHOLE_LINE
+}tk_util;
 
 typedef uint64_t tkey_t;
 typedef void (*bind_function)(tkey_t, void*);
 
-void tk_init(void);
-void tk_finish(void);
-void tk_bind_key		(tkey_t k, bind_function f, void* argument_data);
-void tk_bind_all_key		(bind_function f, void* argument_data);
-void tk_bind_all_printable_key	(bind_function f, void* argument_data);
-int  tk_is_printable(tkey_t k);
-void tk_wait(void);
+void tk_init (void);
+void tk_finish (void);
+void tk_bind_key (tkey_t k, bind_function f, void* argument_data);
+void tk_bind_all_key (bind_function f, void* argument_data);
+void tk_bind_all_printable_key (bind_function f, void* argument_data);
+int  tk_is_printable (tkey_t k);
+void tk_wait (void);
+
+void tk_cursor_move (size_t row, size_t col);
+void tk_cursor_movement (tk_util movement, size_t n);
+void tk_clear (tk_util clear_comm);
+void tk_cursor_visible (int visible);
+void tk_cursor_save(void);
+void tk_cursor_restore(void);
+void tk_cursor_position(size_t* row, size_t* col);
+struct winsize tk_screen_size(void);
 
 #endif // __TK_H__

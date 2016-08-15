@@ -58,6 +58,10 @@ trie_t bind;
 
 int tk_pipe[2];
 
+/*
+ *--TK----------------------------------------------------------------
+ */
+
 /** Returns whether the key `k` is printable.
   *
   * @param k key tk code
@@ -292,4 +296,157 @@ void tk_bind_all_printable_key (bind_function f, void* argument_data)
 void tk_wait (void)
 {
 	pthread_join(getchar_monitor_thread, NULL);
+}
+
+/*
+ * --UTILITIES-------------------------------------------------------
+ */
+
+
+/** moves the terminal cursor to the row `row` and column `col`
+  */
+void tk_cursor_move (size_t row, size_t col)
+{
+	fprintf(stdout, "\033[%zu;%zuH", row, col);
+	fflush(stdout);
+}
+
+/** get the current cursor position and put in the memory location
+  * pointed by `row` and `col`.
+  */
+void tk_cursor_position (size_t* row, size_t* col)
+{
+	struct termios t0, t1;
+
+	tcgetattr(STDIN_FILENO, &t0);
+
+	t1 = t0;
+	t1.c_lflag &= ~(ECHO | ICANON);
+
+	tcsetattr(STDIN_FILENO, TCSANOW, &t1);
+
+	printf("\033[6n");
+	fflush(stdout);
+
+	scanf("\033[%zu;%zuR", row, col);
+	fflush(stdout);
+
+	tcsetattr(STDIN_FILENO, TCSANOW, &t0);
+}
+
+/** Writes the terminal width in the address pointed by `w`
+  * and the terminal height in the address pointed by `w`.
+  *
+  */
+struct winsize tk_screen_size (void)
+{
+	struct winsize winsiz;
+	ioctl(STDOUT_FILENO, TIOCGWINSZ, &winsiz);
+	return winsiz;
+}
+
+/**
+  * move `n` times the cursor with the predefined cursor
+  * movements:
+  *
+  * `TK_CURSOR_UP`
+  * `TK_CURSOR_DOWN`
+  * `TK_CURSOR_LEFT`
+  * `TK_CURSOR_RIGHT`
+  *
+  */
+void tk_cursor_movement (tk_util movement, size_t n)
+{
+	char* fmt;
+
+	switch(movement){
+	case TK_CURSOR_UP:
+		fmt = "\033[%dA";
+		break;
+	case TK_CURSOR_DOWN:
+		fmt = "\033[%dB";
+		break;
+	case TK_CURSOR_RIGHT:
+		fmt = "\033[%dC";
+		break;
+	case TK_CURSOR_LEFT:
+		fmt = "\033[%dD";
+		break;
+	default:
+		return;
+	}
+	fprintf(stdout, fmt, n);
+	fflush(stdout);
+}
+
+/**
+  * clear the screen with `clear_comm` predefined
+  * command. 
+  *
+  * `clear_comm` may have these values:
+  *
+  * `TK_CLEAR_SCREEN` clears the whole screen
+  * `TK_CLEAR` clears from the cursor to the end of line
+  * `TK_CLEAR` clears from the cursor to the beginning of line
+  * `TK_CLEAR` clears the whole line
+  */
+void tk_clear (tk_util clear_comm)
+{
+	char* comm;
+	switch(clear_comm){
+	case TK_CLEAR_SCREEN:
+		comm = "\033[2J";
+		break;
+	case TK_CLEAR_LINE_END:
+		comm = "\033[K";
+		break;
+	case TK_CLEAR_LINE_BEGINNING:
+		comm = "\033[1K";
+		break;
+	case TK_CLEAR_WHOLE_LINE:
+		comm = "\033[2K";
+		break;
+	default:
+		return;
+	}
+
+	fprintf(stdout, "%s", comm);
+	fflush(stdout);
+}
+
+/**
+  * sets the cursor visibility
+  *
+  * @param visible	whether the cursor is set to
+  *			(1) visible or
+  *			(0) invisible
+  */
+void tk_cursor_visible (int visible)
+{
+	char* comm;
+	if(visible)
+		comm = "\033[?25h";
+	else
+		comm = "\033[?25l";
+
+	fprintf(stdout, "%s", comm);
+	fflush(stdout);
+}
+
+/**
+  * saves the cursor position
+  */
+void tk_cursor_save(void)
+{
+	fprintf(stdout, "\033[s");
+	fflush(stdout);
+}
+
+/**
+  * restores the cursor position
+  */
+void tk_cursor_restore(void)
+{
+	fprintf(stdout, "\033[u");
+	fflush(stdout);
 }

@@ -41,6 +41,7 @@ build/
 
 # backup
 *~
+*.swp
 
 # doxygen
 doc/doxygen
