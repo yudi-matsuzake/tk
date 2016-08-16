@@ -8,9 +8,6 @@ void fbind(tkey_t k, void* p)
 		case TK_NUL:
 			printf(STR(TK_NUL));
 			break;
-		case TK_ALT_(TK_NUL):
-			printf(STR(ALT + TK_NUL));
-			break;
 		case TK_CTRL_A:
 			printf(STR(TK_CTRL_A));
 			break;
@@ -166,6 +163,9 @@ void fbind(tkey_t k, void* p)
 			break;
 		case TK_ALT_(TK_CTRL_Z):
 			printf(STR(ALT + TK_CTRL_Z));
+			break;
+		case TK_ESC:
+			printf(STR(TK_ESC));
 			break;
 		case TK_ALT_(TK_ESC):
 			printf(STR(ALT + TK_ESC));

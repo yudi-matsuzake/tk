@@ -60,7 +60,7 @@ int main()
 
 	tk_bind_key(TK_CTRL_H, cursor_visible, 0);
 	tk_bind_key(TK_CTRL_X, cursor_visible, (void*)1);
-	tk_bind_key(TK_CTRL_X, clearscreen, (void*)1);
+	tk_bind_key(TK_CTRL_L, clearscreen, NULL);
 
 	size_t current_row, current_col;
 

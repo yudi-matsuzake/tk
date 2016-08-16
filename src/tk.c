@@ -220,6 +220,7 @@ void destroy_bind_queues(tnode_t* node)
   */
 void tk_finish (void)
 {
+	
 	close(tk_pipe[1]);
 
 	destroy_bind_queues( &bind.root );
@@ -311,29 +312,6 @@ void tk_cursor_move (size_t row, size_t col)
 	fflush(stdout);
 }
 
-/** get the current cursor position and put in the memory location
-  * pointed by `row` and `col`.
-  */
-void tk_cursor_position (size_t* row, size_t* col)
-{
-	struct termios t0, t1;
-
-	tcgetattr(STDIN_FILENO, &t0);
-
-	t1 = t0;
-	t1.c_lflag &= ~(ECHO | ICANON);
-
-	tcsetattr(STDIN_FILENO, TCSANOW, &t1);
-
-	printf("\033[6n");
-	fflush(stdout);
-
-	scanf("\033[%zu;%zuR", row, col);
-	fflush(stdout);
-
-	tcsetattr(STDIN_FILENO, TCSANOW, &t0);
-}
-
 /** Writes the terminal width in the address pointed by `w`
   * and the terminal height in the address pointed by `w`.
   *
@@ -360,20 +338,20 @@ void tk_cursor_movement (tk_util movement, size_t n)
 	char* fmt;
 
 	switch(movement){
-	case TK_CURSOR_UP:
-		fmt = "\033[%dA";
-		break;
-	case TK_CURSOR_DOWN:
-		fmt = "\033[%dB";
-		break;
-	case TK_CURSOR_RIGHT:
-		fmt = "\033[%dC";
-		break;
-	case TK_CURSOR_LEFT:
-		fmt = "\033[%dD";
-		break;
-	default:
-		return;
+		case TK_CURSOR_UP:
+			fmt = "\033[%dA";
+			break;
+		case TK_CURSOR_DOWN:
+			fmt = "\033[%dB";
+			break;
+		case TK_CURSOR_RIGHT:
+			fmt = "\033[%dC";
+			break;
+		case TK_CURSOR_LEFT:
+			fmt = "\033[%dD";
+			break;
+		default:
+			return;
 	}
 	fprintf(stdout, fmt, n);
 	fflush(stdout);
@@ -449,4 +427,27 @@ void tk_cursor_restore(void)
 {
 	fprintf(stdout, "\033[u");
 	fflush(stdout);
+}
+
+/** Write the cursor position to the pointers `row` and `col`.
+  */
+void tk_cursor_position (size_t* row, size_t* col)
+{
+	struct termios t0, t1;
+
+	tcgetattr(STDIN_FILENO, &t0);
+
+	t1 = t0;
+	t1.c_lflag &= ~(ECHO | ICANON);
+	t1.c_cflag &= ~CREAD;
+
+	tcsetattr(STDIN_FILENO, TCSANOW, &t1);
+
+	char* comm = "\033[6n";
+	char buffer[BUFSIZ];
+	write(STDOUT_FILENO, comm, strlen(comm));
+	read(STDOUT_FILENO, buffer, BUFSIZ);
+	sscanf(buffer, "\033[%zd;%zdR", row, col);
+
+	tcsetattr(STDIN_FILENO, TCSANOW, &t0);
 }
