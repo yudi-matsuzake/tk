@@ -106,17 +106,23 @@ void exec_queue(queue_t* bind_queue, tkey_t k)
  */
 void call_bind (tkey_t k)
 {
-	queue_t* bind_queue;
+	queue_t bind_queue;
+	gerror_t result;
 
 	/*
 	 * call the binding for all keys
 	 */
 	tkey_t all_key = TK_ALL_KEY;
-	bind_queue = trie_get_element(&bind, &all_key, sizeof(tkey_t));
-	exec_queue(bind_queue, k);
+	result = trie_get_element(&bind, &all_key, sizeof(tkey_t), &bind_queue);
+	if(result == GERROR_OK)
+		exec_queue(&bind_queue, k);
 
-	bind_queue = trie_get_element(&bind, &k, sizeof(tkey_t));
-	exec_queue(bind_queue, k);
+	/*
+	 * call the binding for key `k`
+	 */
+	result = trie_get_element(&bind, &k, sizeof(tkey_t), &bind_queue);
+	if(result == GERROR_OK)
+		exec_queue(&bind_queue, k);
 }
 
 /*

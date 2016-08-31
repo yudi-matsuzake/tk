@@ -36,15 +36,14 @@ void cursor_visible(tkey_t k, void* p)
 }
 
 void clearscreen(tkey_t k, void* p){
-	tk_clear(TK_CLEAR_WHOLE_LINE);
+	tk_clear(TK_CLEAR_SCREEN);
 }
 
 int main()
 {
 	tk_init();
+	tk_clear(TK_CLEAR_SCREEN);
 
-	size_t row, col;
-	tk_cursor_position(&row, &col);
 
 	tk_bind_key(TK_j, cursor_move, NULL);
 	tk_bind_key(TK_J, cursor_move, NULL);
@@ -62,23 +61,15 @@ int main()
 	tk_bind_key(TK_CTRL_X, cursor_visible, (void*)1);
 	tk_bind_key(TK_CTRL_L, clearscreen, NULL);
 
-	size_t current_row, current_col;
-
 	while(!exit){
+		tk_cursor_save();
+		tk_cursor_move(0, 0);
+		struct winsize w = tk_screen_size();
+		printf("%dx%d", w.ws_row, w.ws_col);
+		tk_cursor_restore();
 		printf("o");
 		fflush(stdout);
-		sleep(1);
-
-		tk_cursor_position(&current_row, &current_col);
-		tk_cursor_move(row, col);
-
-		tk_clear(TK_CLEAR_WHOLE_LINE);
-		struct winsize w = tk_screen_size();
-		printf("%dx%d\n", w.ws_row, w.ws_col);
-		tk_clear(TK_CLEAR_WHOLE_LINE);
-		printf("%zu, %zu\n", current_row, current_col);
-
-		tk_cursor_move(current_row, current_col);
+		usleep(500000);
 	}
 
 	printf("\n");

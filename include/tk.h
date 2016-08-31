@@ -283,7 +283,6 @@ void tk_clear (tk_util clear_comm);
 void tk_cursor_visible (int visible);
 void tk_cursor_save(void);
 void tk_cursor_restore(void);
-void tk_cursor_position(size_t* row, size_t* col);
 struct winsize tk_screen_size(void);
 
 #endif // __TK_H__
