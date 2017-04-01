@@ -1,10 +1,13 @@
 LBITS := $(shell getconf LONG_BIT)
 PTHREAD_PATH=
+
+# FIXME: only work for debian and archlinux systems
 ifeq ($(LBITS),64)
-	PTHREAD_PATH=/usr/lib/x86_64-linux-gnu
+	PTHREAD_PATH=/usr/lib
 else
 	PTHREAD_PATH=/usr/lib/i386-linux-gnu
 endif
+
 #-GCC-------------------------------------------------
 GCC=gcc
 GCC_FLAGS=-Wall -Wextra -O3
